@@ -1,17 +1,17 @@
-# Meld
+# Assign
 
 Mutate instances with declarative flavor!
 
 
-This module provides macro `meld!` to allow mutating instance with declarative flavor
+This module provides macro `assign!` to allow mutating instance with declarative flavor
 
-The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way. `meld!` macro also allows programmer to skip defining fields that has default value. Such case are used when a dependency is exposing an non-exhaustive struct
+The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way. `assign!` macro also allows programmer to skip defining fields that has default value. Such case are used when a dependency is exposing an non-exhaustive struct
 
 # Usage
 
 ```rust
 #[macro_use]
-extern crate meld;
+extern crate assign;
 
 fn main() {
     struct SomeStruct {
@@ -29,11 +29,11 @@ fn main() {
         }
     }
 
-    // In order to treat the mutation of field `a` and `b` as an initialization
-    // Use meld to mutate field in declarative flavor, thus avoiding the risk inserting code
+    // In order to treat the mutation of field `a` and `c` as an initialization,
+    // Use assign to mutate field in declarative flavor, thus avoiding the risk inserting code
     // between the line that defines a field and the line that defines the other
     // Note that field `b` is skipped
-    let instance = meld!(SomeStruct::new(), {
+    let instance = assign!(SomeStruct::new(), {
       a: 2u32,
       c: String::from("new"),
     });

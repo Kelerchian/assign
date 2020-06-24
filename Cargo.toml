@@ -1,5 +1,5 @@
 [package]
-name = "meld"
+name = "assign"
 version = "0.1.0"
 authors = ["Alan Darmasaputra <alan@accelbyte.net>"]
 edition = "2018"
