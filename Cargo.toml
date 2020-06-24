@@ -1,8 +1,12 @@
 [package]
 name = "assign"
 version = "1.0.0"
-authors = ["Alan Darmasaputra <alan@accelbyte.net>"]
 edition = "2018"
+description = "Simple macro to allow mutating instance with declarative flavor"
+authors = ["Alan Darmasaputra <alan@accelbyte.net>"]
+repository = "https://github.com/Kelerchian/assign"
+readme = "README.md"
+license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
