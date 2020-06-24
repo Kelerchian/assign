@@ -2,9 +2,10 @@
 
 Mutate instances with declarative flavor!
 
-The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way.
 
-`meld!` allows programmer to not define a field that has default value
+This module provides macro `meld!` to allow mutating instance with declarative flavor
+
+The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way. `meld!` macro also allows programmer to skip defining fields that has default value. Such case are used when a dependency is exposing an non-exhaustive struct
 
 # Usage
 
