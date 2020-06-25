@@ -3,7 +3,7 @@ on:
     branches:
       - master
 
-name: Build, Test, Release
+name: Build, Test, Publish
 
 jobs:
   build-test-release:
@@ -20,4 +20,4 @@ jobs:
       - run: cargo login ${CRATES_IO_TOKEN}
         env:
           CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
-      - run: cargo release
+      - run: cargo publish
