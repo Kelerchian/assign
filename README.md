@@ -1,3 +1,5 @@
+![Build, Test](https://github.com/Kelerchian/assign/workflows/Build,%20Test/badge.svg)
+
 # Assign
 
 Mutate instances with declarative flavor!
