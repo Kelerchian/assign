@@ -17,13 +17,13 @@ To submit code, please follow these steps:
 
 ### Documentation and Tests
 
-Write (Documenting tests)[https://doc.rust-lang.org/rustdoc/documentation-tests.html] to document and test code in one go.
+Write [documentation tests](https://doc.rust-lang.org/rustdoc/documentation-tests.html) to document and test code in one go.
 
 Use `cargo doc` to review the documentation before submitting code.
 
 ## Versioning
 
-assign! uses [semver](https://semver.org/) for versioning. Adjust version in `Cargo.toml` accordingly.
+assign! uses [semver](https://semver.org/) for versioning. Adjust the version in `Cargo.toml` accordingly.
 
 ## Publishing to crates.io
 
