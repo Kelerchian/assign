@@ -1,8 +1,10 @@
 [package]
 name = "assign"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2018"
 description = "Simple macro to allow mutating instance with declarative flavor"
+categories = ["no-std"]
+keywords = ["macro"]
 authors = ["Alan Darmasaputra <alan@accelbyte.net>"]
 repository = "https://github.com/Kelerchian/assign"
 readme = "README.md"
