@@ -1,54 +1,116 @@
-//! This module provides macro `assign!` to allow mutating instance with declarative flavor
+//! This module provides the `assign!` macro to allow mutating a struct value in
+//! a declarative style.
 //!
-//! The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way. `assign!` macro also allows programmer to skip defining fields that has default value. Such case are used when a dependency is exposing an non-exhaustive struct
+//! It is an alternative to [struct update syntax][] that works with
+//! [non-exhaustive][] structs.
+//!
+//! [struct update syntax]: https://doc.rust-lang.org/book/ch05-01-defining-structs.html#creating-instances-from-other-instances-with-struct-update-syntax
+//! [non-exhaustive]: https://doc.rust-lang.org/reference/attributes/type_system.html#the-non_exhaustive-attribute
+//!
+//! It is used as
+//!
+//! ```
+//! # use assign::assign;
+//! # struct Struct { field: u8 }
+//! # let init_expression = Struct { field: 0 };
+//! # let new_field_value = 1;
+//! let foo = assign!(init_expression, {
+//!     field: new_field_value,
+//!     // other_field: new_other_field_value,
+//!     // ...
+//! });
+//! ```
+//!
+//! For details and examples, see the documentation for the macro itself.
 #![no_std]
 
-/// Mutate instance with declarative flavor
+/// Mutate a struct value in a declarative style.
 ///
+/// # Basic usage
 ///
-/// # Usage
 /// ```
-/// # #[macro_use] extern crate assign;
-/// # fn main() {
+/// # use assign::assign;
+/// #
 /// #[non_exhaustive]
+/// #[derive(Debug, PartialEq)]
 /// struct SomeStruct {
 ///     a: u32,
 ///     b: Option<f32>,
 ///     c: String,
 /// }
+///
 /// impl SomeStruct {
-///     fn new() -> SomeStruct {
-///         SomeStruct {
-///             a: 1u32,
-///             b: None,
-///             c: String::from("old"),
-///         }
+///     fn new() -> Self {
+///         // ...
+/// #       SomeStruct {
+/// #           a: 1u32,
+/// #           b: None,
+/// #           c: String::from("old"),
+/// #       }
 ///     }
 /// }
 ///
-/// // In order to treat the mutation of field `a` and `c` as an initialization
-/// // Use assign to mutate field in declarative flavor, thus avoiding the risk inserting code
-/// // between the line that defines a field and the line that defines the other
-/// // Note that field `b` is skipped
-/// let instance = assign!(SomeStruct::new(), {
-///     a: 2u32,
-///     c: String::from("new"),
+/// let instance1 = assign!(SomeStruct::new(), {
+///     a: 2,
+///     c: "new".into(),
 /// });
 ///
-/// // Equivalent
+/// // The same thing using mutation explicitly.
+/// // This is what the above expands to.
 /// let instance2 = {
 ///     let mut item = SomeStruct::new();
-///     item.a = 2u32;
-///     item.c = String::from("new");
+///     item.a = 2;
+///     item.c = "new".into();
 ///     item
 /// };
 ///
-/// assert_eq!(instance.a, instance2.a);
-/// assert_eq!(instance.b, instance2.b);
-/// assert_eq!(&instance.c, &instance2.c);
-/// # }
+/// // The same thing using struct update syntax (does not work for
+/// // non-exhaustive structs defined in external crates).
+/// let instance3 = SomeStruct {
+///     a: 2,
+///     c: "new".into(),
+///     ..SomeStruct::new()
+/// };
+///
+/// assert_eq!(instance1, instance2);
+/// assert_eq!(instance1, instance3);
 /// ```
 ///
+/// # Slightly more realistic example
+///
+/// ```
+/// # struct Arg {}
+/// # impl Arg { fn new(_opt: ArgOptions) -> Self { Self {} } }
+/// // in awesome_cli_lib
+/// #[non_exhaustive]
+/// # #[derive(Default)]
+/// struct ArgOptions {
+///     pub name: String,
+///     pub short: Option<String>,
+///     pub long: Option<String>,
+///     pub help: Option<String>,
+///     pub required: bool,
+///     pub takes_value: bool,
+///     pub multiple: bool,
+///     pub default_value: Option<String>,
+/// }
+///
+/// impl ArgOptions {
+///     pub fn new(name: String) -> Self {
+///         // ...
+/// #       Self { name, ..Default::default() }
+///     }
+/// }
+///
+/// // your crate
+/// use assign::assign;
+///
+/// let arg = Arg::new(assign!(ArgOptions::new("version".into()), {
+///     short: Some("V".into()),
+///     long: Some("version".into()),
+///     help: Some("prints the version and quits.".into()),
+/// }));
+/// ```
 #[macro_export]
 macro_rules! assign {
     ($initial_value:expr, {
