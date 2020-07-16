@@ -5,7 +5,10 @@ edition = "2018"
 description = "Simple macro to allow mutating instance with declarative flavor"
 categories = ["no-std"]
 keywords = ["macro"]
-authors = ["Alan Darmasaputra <kelerchian@gmail.com>"]
+authors = [
+    "Alan Darmasaputra <kelerchian@gmail.com>",
+    "Jonas Platte <jplatte@posteo.de>",
+]
 repository = "https://github.com/Kelerchian/assign"
 readme = "README.md"
 license-file = "LICENSE"
