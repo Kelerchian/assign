@@ -121,3 +121,46 @@ macro_rules! assign {
         item
     })
 }
+
+#[cfg(test)]
+mod tests {
+    #[derive(Debug, Default, PartialEq)]
+    struct SomeStruct {
+        a: u32,
+        b: Option<f32>,
+        c: Option<u64>,
+    }
+
+    #[test]
+    fn basic() {
+        let res = assign!(SomeStruct::default(), {
+            a: 5,
+            b: None,
+        });
+
+        assert_eq!(
+            res,
+            SomeStruct {
+                a: 5,
+                b: None,
+                c: None
+            }
+        );
+    }
+
+    #[test]
+    fn field_expr_inference() {
+        let res = assign!(SomeStruct::default(), {
+            c: 1.into(),
+        });
+
+        assert_eq!(
+            res,
+            SomeStruct {
+                a: 0,
+                b: None,
+                c: Some(1)
+            }
+        );
+    }
+}
