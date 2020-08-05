@@ -114,12 +114,18 @@
 #[macro_export]
 macro_rules! assign {
     ($initial_value:expr, {
-        $($field:ident: $value:expr),+ $(,)?
+        $( $field:ident $( : $value:expr )? ),+ $(,)?
     }) => ({
         let mut item = $initial_value;
-        $( item.$field = $value; )+
+        $( $crate::assign!(@assign item $field $( : $value )?); )+
         item
-    })
+    });
+    (@assign $item:ident $field:ident : $value:expr) => {
+        $item.$field = $value;
+    };
+    (@assign $item:ident $field:ident) => {
+        $item.$field = $field;
+    };
 }
 
 #[cfg(test)]
@@ -149,8 +155,26 @@ mod tests {
     }
 
     #[test]
+    fn shorthand() {
+        let def = SomeStruct::default();
+        let a = 5;
+        let res = assign!(def, { a });
+
+        assert_eq!(
+            res,
+            SomeStruct {
+                a: 5,
+                b: None,
+                c: None
+            }
+        );
+    }
+
+    #[test]
     fn field_expr_inference() {
+        let b = 0.0.into();
         let res = assign!(SomeStruct::default(), {
+            b,
             c: 1.into(),
         });
 
@@ -158,7 +182,7 @@ mod tests {
             res,
             SomeStruct {
                 a: 0,
-                b: None,
+                b: Some(0.0),
                 c: Some(1)
             }
         );
