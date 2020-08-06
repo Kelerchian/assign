@@ -187,4 +187,25 @@ mod tests {
             }
         );
     }
+
+    #[test]
+    fn all_fields() {
+        let a = 1;
+        let b = Some(1.0);
+
+        let res = assign!(SomeStruct::default(), {
+            a,
+            b,
+            c: 1.into(),
+        });
+
+        assert_eq!(
+            res,
+            SomeStruct {
+                a: 1,
+                b: Some(1.0),
+                c: Some(1),
+            }
+        );
+    }
 }
