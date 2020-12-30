@@ -4,12 +4,11 @@
 
 Mutate instances with declarative flavor!
 
-
 This module provides macro `assign!` to allow mutating instance with declarative flavor
 
 The motivation of this macro is to enable programmer to document a sequence of mutations instance fields as initialization by writing it in a declarative way. `assign!` macro also allows programmer to skip defining fields that has default value. Such case are used when a dependency is exposing an non-exhaustive struct
 
-# Usage
+## Usage
 
 ```rust
 #[macro_use]
@@ -53,3 +52,7 @@ fn main() {
     assert_eq!(instance.b, instance2.b);
 }
 ```
+
+## License
+
+[MIT](LICENSE)
